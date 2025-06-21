@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>문서 트리와 뷰어</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 300px;
+            background: #f4f4f4;
+            border-right: 1px solid #ddd;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .tree ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+        .tree li {
+            cursor: pointer;
+            margin: 5px 0;
+        }
+        .tree li:hover {
+            background: #e0e0e0;
+        }
+        .content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        .selected {
+            background: #d0eaff;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>문서 목록</h2>
+        <nav class="tree">
+            <ul>
+                <li onclick="showDoc('doc1', this)">소개</li>
+                <li>
+                    카테고리1
+                    <ul>
+                        <li onclick="showDoc('doc2', this)">글 1</li>
+                        <li onclick="showDoc('doc3', this)">글 2</li>
+                    </ul>
+                </li>
+                <li>
+                    카테고리2
+                    <ul>
+                        <li onclick="showDoc('doc4', this)">글 3</li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="content" id="docContent">
+        <h2>문서를 선택하세요</h2>
+        <p>왼쪽 메뉴에서 문서를 선택하면 내용을 볼 수 있습니다.</p>
+    </div>
+    <script>
+        const docs = {
+            doc1: {
+                title: "소개",
+                body: "<p>이곳은 블로그 스타일의 문서 뷰어입니다.</p>"
+            },
+            doc2: {
+                title: "글 1",
+                body: "<p>카테고리1의 첫 번째 글입니다.</p>"
+            },
+            doc3: {
+                title: "글 2",
+                body: "<p>카테고리1의 두 번째 글입니다.</p>"
+            },
+            doc4: {
+                title: "글 3",
+                body: "<p>카테고리2의 글입니다.</p>"
+            }
+        };
+
+        function showDoc(docId, el) {
+            // Remove previous selection
+            document.querySelectorAll('.tree li').forEach(li => li.classList.remove('selected'));
+            el.classList.add('selected');
+            // Show content
+            const doc = docs[docId];
+            if (doc) {
+                document.getElementById('docContent').innerHTML = `<h2>${doc.title}</h2>${doc.body}`;
+            }
+        }
+    </script>
+</body>
+</html>
