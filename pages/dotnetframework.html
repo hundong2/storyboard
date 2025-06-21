@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>.NET 프레임워크 대화형 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Professional Blue & Slate -->
+    <!-- Application Structure Plan: 이 애플리케이션은 사용자가 .NET 프레임워크에 대한 정보를 수동적으로 읽는 대신, 능동적으로 탐색하고 결정을 내릴 수 있도록 돕는 작업 중심의 대화형 대시보드 구조를 채택했습니다. 1) '프레임워크 심층 분석': 각 프레임워크의 상세 정보를 카드 기반 UI로 제공하여 가독성을 높입니다. 2) '사용 사례별 추천': 간단한 질문과 답변을 통해 사용자 프로젝트에 가장 적합한 프레임워크를 제안하는 대화형 마법사 기능을 제공합니다. 3) '인기 동향': 복잡한 표 데이터를 동적 차트로 시각화하여 트렌드를 쉽게 파악할 수 있게 합니다. 이 구조는 원본 보고서의 선형적인 흐름에서 벗어나, 개발자의 실제적인 의사결정 과정을 지원하는 데 최적화되었습니다. -->
+    <!-- Visualization & Content Choices: 
+        - 보고서 정보: 프레임워크 개요, 장단점 -> 목표: 정보 전달 -> 표현 방식: 아이콘과 텍스트를 포함한 카드 레이아웃 (HTML/Tailwind) -> 상호작용: 탭 클릭 시 해당 프레임워크 정보 표시 -> 정당성: 복잡한 텍스트를 시각적으로 분리하여 가독성 향상.
+        - 보고서 정보: 인기 순위, 개발자 선호도 데이터 -> 목표: 비교 -> 표현 방식: 막대 차트 및 도넛 차트 (Chart.js/Canvas) -> 상호작용: 차트 요소에 마우스 호버 시 툴팁으로 상세 정보 표시 -> 정당성: 데이터의 시각적 표현을 통해 경향성과 비율을 직관적으로 이해.
+        - 보고서 정보: 특정 개발 시나리오(데스크톱, 백엔드)에 대한 추천 -> 목표: 안내 -> 표현 방식: 대화형 선택 양식 (HTML/JS) -> 상호작용: 사용자가 개발 유형 및 우선순위 선택 시, 실시간으로 추천 프레임워크와 이유를 표시 -> 정당성: 사용자의 특정 요구에 맞는 맞춤형 정보를 제공하여 실제적인 의사결정 지원.
+        - 보고서 정보: 오픈소스 프로젝트 예시 -> 목표: 구체적 사례 제시 -> 표현 방식: 링크가 포함된 목록 (HTML/Tailwind) -> 상호작용: 클릭 시 해당 프로젝트 페이지로 이동 -> 정당성: 추상적인 프레임워크 개념에 대한 실질적인 예시를 제공하여 이해도 증진.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            cursor: pointer;
+            padding: 0.75rem 1rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            color: #475569; /* slate-600 */
+        }
+        .nav-link.active {
+            border-bottom-color: #2563eb; /* blue-600 */
+            color: #1e293b; /* slate-800 */
+            font-weight: 700;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .framework-tab {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            color: #475569;
+            background-color: #e2e8f0;
+        }
+        .framework-tab.active {
+            background-color: #2563eb;
+            color: white;
+            font-weight: 500;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900">.NET 프레임워크 대화형 가이드</h1>
+            <p class="mt-4 text-lg text-slate-600">당신의 다음 프로젝트에 적합한 .NET 기술을 찾아보세요.</p>
+        </header>
+
+        <nav class="flex justify-center border-b border-slate-200 mb-8">
+            <a class="nav-link active" onclick="showTab('intro')">소개</a>
+            <a class="nav-link" onclick="showTab('deepdive')">프레임워크 심층 분석</a>
+            <a class="nav-link" onclick="showTab('advisor')">사용 사례별 추천</a>
+            <a class="nav-link" onclick="showTab('trends')">인기 동향</a>
+        </nav>
+
+        <main>
+            <section id="intro" class="tab-content active fade-in">
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-md">
+                    <h2 class="text-2xl font-bold mb-4 text-slate-900">.NET 생태계에 오신 것을 환영합니다</h2>
+                    <p class="text-slate-700 leading-relaxed mb-4">
+                        .NET은 웹, 모바일, 데스크톱, 게임, IoT 등 거의 모든 종류의 애플리케이션을 구축할 수 있는 강력하고 다재다능한 개발 플랫폼입니다. 이 가이드는 .NET의 주요 프레임워크인 ASP.NET Core, WPF, .NET MAUI, Blazor의 특징을 분석하여 여러분이 프로젝트 목표에 가장 적합한 기술을 선택할 수 있도록 돕기 위해 제작되었습니다.
+                    </p>
+                    <p class="text-slate-700 leading-relaxed">
+                        각 탭을 클릭하여 프레임워크별 상세 정보, 사용 사례에 맞는 맞춤 추천, 그리고 최신 기술 동향을 확인해보세요. 이 대화형 가이드를 통해 복잡한 기술 스택 사이에서 명확한 방향을 찾으시길 바랍니다.
+                    </p>
+                </div>
+            </section>
+
+            <section id="deepdive" class="tab-content fade-in">
+                <div class="text-center mb-8">
+                     <p class="text-slate-600 max-w-2xl mx-auto">.NET의 핵심 프레임워크들을 자세히 살펴보세요. 각 프레임워크의 정의, 장점, 단점, 그리고 실제 사용된 오픈소스 프로젝트 예시를 통해 심도 있는 이해를 얻을 수 있습니다. 아래 탭을 클릭하여 각 프레임워크의 상세 정보를 확인하세요.</p>
+                </div>
+                <div id="framework-nav" class="flex justify-center items-center space-x-2 mb-8 flex-wrap gap-2">
+                    <!-- Framework tabs will be inserted here by JS -->
+                </div>
+                <div id="framework-content">
+                    <!-- Framework content will be displayed here by JS -->
+                </div>
+            </section>
+
+            <section id="advisor" class="tab-content fade-in">
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-md max-w-3xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-2 text-center text-slate-900">맞춤 프레임워크 추천</h2>
+                    <p class="text-center text-slate-600 mb-6">몇 가지 질문에 답해주시면, 당신의 프로젝트에 가장 적합한 .NET 프레임워크를 추천해 드립니다.</p>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label for="app-type" class="block text-md font-medium text-slate-700 mb-2">1. 어떤 종류의 애플리케이션을 개발하고 싶으신가요?</label>
+                            <select id="app-type" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">선택하세요...</option>
+                                <option value="backend">웹 API 또는 백엔드 서비스</option>
+                                <option value="fullstack-web">풀스택 웹 애플리케이션</option>
+                                <option value="windows-desktop">Windows 데스크톱 애플리케이션</option>
+                                <option value="cross-platform">크로스플랫폼 (모바일 & 데스크톱) 앱</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="priority" class="block text-md font-medium text-slate-700 mb-2">2. 가장 중요하게 생각하는 요소는 무엇인가요?</label>
+                            <select id="priority" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">선택하세요...</option>
+                                <option value="performance">최고 수준의 성능과 확장성</option>
+                                <option value="cross-platform-reach">하나의 코드로 여러 플랫폼 지원</option>
+                                <option value="rich-ui">화려하고 풍부한 UI/그래픽</option>
+                                <option value="csharp-fullstack">C#만 사용한 풀스택 개발</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="recommendation-result" class="mt-8 p-6 bg-slate-50 rounded-lg border border-slate-200 hidden">
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">추천 프레임워크: <span id="recommended-fw" class="text-blue-600"></span></h3>
+                        <p id="recommendation-reason" class="text-slate-700"></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="trends" class="tab-content fade-in">
+                <div class="text-center mb-8">
+                     <p class="text-slate-600 max-w-2xl mx-auto">개발자 설문조사와 웹 사용 통계를 바탕으로 .NET 프레임워크의 현재 인기와 동향을 살펴보세요. 이 차트들은 각 기술의 현재 위치와 성장 가능성을 이해하는 데 도움을 줍니다.</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-center mb-4 text-slate-900">웹 프레임워크/기술 인기 순위 (2024)</h3>
+                        <div class="chart-container">
+                            <canvas id="webTechRankChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-center mb-4 text-slate-900">기타 프레임워크/라이브러리 인기 (2024)</h3>
+                        <div class="chart-container">
+                            <canvas id="otherFrameworksRankChart"></canvas>
+                        </div>
+                    </div>
+                     <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-2">
+                        <h3 class="text-xl font-bold text-center mb-4 text-slate-900">Blazor 개발자 평가 (2024)</h3>
+                        <div class="chart-container max-w-sm">
+                            <canvas id="blazorAdoptionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const frameworkData = {
+            'ASP.NET Core': {
+                description: 'Windows, macOS, Linux에서 실행되는 최신 웹 애플리케이션, 서비스, API를 구축하기 위한 크로스 플랫폼 고성능 오픈소스 프레임워크입니다. REST API, 실시간 통신, 마이크로서비스 아키텍처에 주로 사용됩니다.',
+                pros: [
+                    '최고 수준의 성능 (TechEmpower 벤치마크)',
+                    '크로스 플랫폼 (Windows, macOS, Linux)',
+                    '웹 UI와 API 개발을 위한 통합 프레임워크',
+                    '강력한 내장 보안 기능',
+                    '활발한 오픈소스 커뮤니티'
+                ],
+                cons: [
+                    '보안은 개발자의 주의 깊은 구현이 필요',
+                    '복잡한 MVC 앱의 경우 문서가 부족할 수 있음',
+                    '일부 기능은 기대 성능에 미치지 못할 수 있음'
+                ],
+                projects: [
+                    { name: 'nopCommerce', url: 'https://github.com/nopSolutions/nopCommerce' },
+                    { name: 'Orchard Core', url: 'https://github.com/OrchardCMS/OrchardCore' },
+                    { name: 'Ocelot', url: 'https://github.com/ThreeMammals/Ocelot' }
+                ]
+            },
+            'WPF': {
+                description: 'Windows 전용의 시각적으로 풍부한 데스크톱 애플리케이션을 구축하기 위한 UI 프레임워크입니다. XAML을 사용하여 UI와 로직을 분리하며, 데이터 바인딩, 2D/3D 그래픽, 애니메이션 등 강력한 기능을 제공합니다.',
+                pros: [
+                    '화려하고 상호작용이 풍부한 UI 구현 가능',
+                    '강력한 데이터 바인딩 기능',
+                    '해상도 독립성 (DPI 스케일링)',
+                    'DirectX를 활용한 고성능 그래픽 렌더링',
+                    '성숙하고 안정적인 프레임워크'
+                ],
+                cons: [
+                    'Windows 전용 (크로스 플랫폼 불가)',
+                    '리소스 소모가 많을 수 있음',
+                    'XAML/MVVM 패턴의 학습 곡선이 높음'
+                ],
+                projects: [
+                    { name: 'WPF UI', url: 'https://github.com/lepoco/wpfui' },
+                    { name: 'ScreenToGif', url: 'https://github.com/NickeManarin/ScreenToGif' },
+                    { name: 'MaterialDesignInXamlToolkit', url: 'https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit' }
+                ]
+            },
+            '.NET MAUI': {
+                description: '.NET MAUI(Multi-platform App UI)는 단일 C# 코드베이스로 Android, iOS, macOS, Windows용 네이티브 앱을 빌드하기 위한 크로스 플랫폼 프레임워크입니다. Xamarin.Forms의 진화된 형태입니다.',
+                pros: [
+                    '단일 코드베이스로 4개 플랫폼 지원 (개발 시간 단축)',
+                    '플랫폼별 네이티브 UI 컨트롤 사용',
+                    '생산성을 높이는 핫 리로드 기능',
+                    '웹 기술(Blazor)을 네이티브 앱에 통합 가능',
+                    'Xamarin에서 이어진 크로스 플랫폼 개발 경험'
+                ],
+                cons: [
+                    '비교적 최신 프레임워크로 안정성이 떨어질 수 있음',
+                    '복잡한 그래픽 성능은 WPF보다 떨어짐',
+                    'Visual Studio에 대한 의존도가 높음'
+                ],
+                projects: [
+                    { name: '.NET MAUI Community Toolkit', url: 'https://github.com/communitytoolkit/Maui' },
+                    { name: '.NET Podcasts App Sample', url: 'https://github.com/dotnet/podcasts' },
+                    { name: 'AStore App Sample', url: 'https://github.com/VladislavAntonyuk/Astore' }
+                ]
+            },
+            'Blazor': {
+                description: 'C#과 HTML을 사용하여 대화형 클라이언트 측 웹 UI를 빌드하기 위한 프레임워크입니다. WebAssembly를 통해 브라우저에서 직접 .NET 코드를 실행하거나(Blazor WebAssembly), 서버에서 UI 로직을 실행(Blazor Server)할 수 있습니다.',
+                pros: [
+                    'JavaScript 대신 C#으로 프론트엔드 개발',
+                    'WebAssembly를 통한 거의 네이티브에 가까운 성능',
+                    '기존 .NET 라이브러리 및 생태계 활용',
+                    '컴포넌트 기반 아키텍처',
+                    'PWA(프로그레시브 웹 앱) 구축 가능'
+                ],
+                cons: [
+                    '초기 로딩 시 다운로드 크기가 클 수 있음 (WASM)',
+                    '서버 모델은 지속적인 네트워크 연결 필요',
+                    'JS 프레임워크 대비 아직 작은 커뮤니티'
+                ],
+                projects: [
+                    { name: 'MudBlazor', url: 'https://github.com/MudBlazor/MudBlazor' },
+                    { name: 'Ant Design Blazor', url: 'https://github.com/ant-design-blazor/ant-design-blazor' },
+                    { name: 'Electron.NET', url: 'https://github.com/ElectronNET/Electron.NET' }
+                ]
+            }
+        };
+
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function showFramework(fwName) {
+            const contentDiv = document.getElementById('framework-content');
+            const data = frameworkData[fwName];
+
+            let projectsHtml = data.projects.map(p => `
+                <li class="mb-2">
+                    <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 hover:underline transition-colors">${p.name}</a>
+                </li>
+            `).join('');
+
+            contentDiv.innerHTML = `
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-md fade-in">
+                    <h3 class="text-3xl font-bold mb-3 text-slate-900">${fwName}</h3>
+                    <p class="text-slate-700 mb-6">${data.description}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-3 text-green-700">장점</h4>
+                            <ul class="list-disc list-inside space-y-2 text-slate-700">
+                                ${data.pros.map(pro => `<li>${pro}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-semibold mb-3 text-red-700">단점</h4>
+                            <ul class="list-disc list-inside space-y-2 text-slate-700">
+                                ${data.cons.map(con => `<li>${con}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-6 border-t pt-6">
+                        <h4 class="text-xl font-semibold mb-3 text-slate-800">주요 오픈소스 프로젝트</h4>
+                        <ul class="list-none">
+                            ${projectsHtml}
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            document.querySelectorAll('.framework-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`.framework-tab[data-fw="${fwName}"]`).classList.add('active');
+        }
+
+        function setupAdvisor() {
+            const appTypeSelect = document.getElementById('app-type');
+            const prioritySelect = document.getElementById('priority');
+            const resultDiv = document.getElementById('recommendation-result');
+            const recommendedFwSpan = document.getElementById('recommended-fw');
+            const reasonP = document.getElementById('recommendation-reason');
+
+            function getRecommendation() {
+                const appType = appTypeSelect.value;
+                const priority = prioritySelect.value;
+
+                if (!appType || !priority) {
+                    resultDiv.classList.add('hidden');
+                    return;
+                }
+
+                let recommendation = '';
+                let reason = '';
+
+                if (appType === 'backend') {
+                    recommendation = 'ASP.NET Core';
+                    reason = 'ASP.NET Core는 고성능, 크로스 플랫폼을 지원하는 최고의 백엔드 프레임워크입니다. 확장 가능한 API와 마이크로서비스 구축에 최적화되어 있습니다.';
+                } else if (appType === 'fullstack-web') {
+                    if (priority === 'csharp-fullstack') {
+                        recommendation = 'Blazor';
+                        reason = 'Blazor는 C#만으로 풀스택 웹 개발을 가능하게 합니다. JavaScript 없이도 풍부한 대화형 UI를 만들고 싶을 때 가장 좋은 선택입니다.';
+                    } else {
+                        recommendation = 'ASP.NET Core (+ 선택적 프론트엔드)';
+                        reason = 'ASP.NET Core 백엔드는 모든 최신 프론트엔드 프레임워크(React, Vue, Angular 등)와 잘 통합됩니다. 성능과 유연성이 중요할 때 이상적입니다.';
+                    }
+                } else if (appType === 'windows-desktop') {
+                    if (priority === 'rich-ui' || priority === 'performance') {
+                        recommendation = 'WPF';
+                        reason = 'WPF는 Windows 전용으로, DirectX를 활용한 강력한 그래픽 성능과 화려한 UI를 구현하는 데 가장 적합한 성숙한 프레임워크입니다.';
+                    } else {
+                        recommendation = '.NET MAUI';
+                        reason = '.NET MAUI도 훌륭한 Windows 데스크톱 앱을 만들 수 있으며, 추후 다른 플랫폼으로 확장할 가능성을 열어둡니다.';
+                    }
+                } else if (appType === 'cross-platform') {
+                    recommendation = '.NET MAUI';
+                    reason = '.NET MAUI는 단일 코드베이스로 Windows, macOS, Android, iOS를 모두 지원하는 Microsoft의 공식 크로스 플랫폼 전략입니다.';
+                }
+
+                recommendedFwSpan.textContent = recommendation;
+                reasonP.textContent = reason;
+                resultDiv.classList.remove('hidden');
+                resultDiv.classList.add('fade-in');
+            }
+
+            appTypeSelect.addEventListener('change', getRecommendation);
+            prioritySelect.addEventListener('change', getRecommendation);
+        }
+
+        function createCharts() {
+            Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+            
+            new Chart(document.getElementById('webTechRankChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Node.js', 'React', 'jQuery', 'Express', 'Angular', 'Vue.js', 'ASP.NET Core', 'Next.js', 'ASP.NET (Legacy)'],
+                    datasets: [{
+                        label: '개발자 사용 비율 (%)',
+                        data: [42.06, 40.58, 21.68, 17.58, 17.29, 14.39, 13.9, 13.43, 11.23],
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `${context.dataset.label}: ${context.raw}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: { display: true, text: '사용 비율 (%)' }
+                        }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('otherFrameworksRankChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['.NET (5+)', '.NET Framework (1-4.8)', 'NumPy', 'Pandas', 'WPF', 'Spring Boot', 'TensorFlow'],
+                    datasets: [{
+                        label: '개발자 사용 비율 (%)',
+                        data: [32.96, 21.62, 16.14, 15.65, 12.35, 12.3, 11.08],
+                         backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                         tooltip: {
+                            callbacks: {
+                                label: (context) => `${context.dataset.label}: ${context.raw}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: '사용 비율 (%)' }
+                        }
+                    }
+                }
+            });
+            
+            new Chart(document.getElementById('blazorAdoptionChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['긍정적 평가', '부정적/중립 평가'],
+                    datasets: [{
+                        label: 'Blazor 개발자 평가',
+                        data: [61.2, 38.8],
+                        backgroundColor: [
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(239, 68, 68, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(22, 163, 74, 1)',
+                            'rgba(220, 38, 38, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `${context.label}: ${context.raw}%`
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const frameworkNav = document.getElementById('framework-nav');
+            const frameworkNames = Object.keys(frameworkData);
+            frameworkNav.innerHTML = frameworkNames.map(name => `
+                <button class="framework-tab" data-fw="${name}" onclick="showFramework('${name}')">${name}</button>
+            `).join('');
+
+            showFramework(frameworkNames[0]);
+            setupAdvisor();
+            createCharts();
+        });
+    </script>
+</body>
+</html>
