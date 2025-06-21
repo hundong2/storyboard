@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storyboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Storyboard</h1>
+    </header>
+    
+    <div class="container">
+        <nav class="sidebar">
+            <ul class="menu-list">
+                <li><a href="#" onclick="loadContent('home')">홈</a></li>
+                <li><a href="#" onclick="loadContent('about')">소개</a></li>
+                <li><a href="#" onclick="loadContent('projects')">프로젝트</a></li>
+                <li><a href="#" onclick="loadContent('blog')">블로그</a></li>
+                <li><a href="#" onclick="loadContent('contact')">연락처</a></li>
+            </ul>
+        </nav>
+        
+        <main class="main-content">
+            <div id="content-area">
+                <h2>환영합니다!</h2>
+                <p>왼쪽 메뉴에서 원하는 페이지를 선택해주세요.</p>
+            </div>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
