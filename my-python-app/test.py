@@ -1,5 +1,5 @@
 import os
-
+from dotenv import load_dotenv
 #folder_path = '/path/to/your/folder'  # 원하는 폴더 경로로 변경
 print(os.getcwd())  # 현재 작업 디렉토리 출력
 def list_files_in_folder(folder_path):
