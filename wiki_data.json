@@ -28,10 +28,10 @@
     "id": "readme"
   },
   {
-    "title": ".NET framework 비교 분석",
+    "title": ".NET framework 분석",
     "path": "pages/dotnetframework.html",
-    "category": ".net",
-    "created_at": "2025-06-22 01:40:12",
-    "id": "netframework비교분석"
+    "category": ".NET",
+    "created_at": "2025-06-22 01:43:50",
+    "id": "netframework분석"
   }
 ]

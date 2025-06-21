@@ -13,7 +13,7 @@ from datetime import datetime
 from pathlib import Path
 
 class WikiManager:
-    def __init__(self, wiki_file="wiki.html", data_file="wiki_data.json"):
+    def __init__(self, wiki_file="index.html", data_file="wiki_data.json"):
         self.wiki_file = Path(wiki_file)
         self.data_file = Path(data_file)
         self.pages = self._load_pages()
