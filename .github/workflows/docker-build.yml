@@ -1,22 +1,29 @@
-name: Build Docker Image
+name: Run search_module.py
 
 on:
   push:
     paths:
-      - 'my-python-app/**'
-      - '.github/workflows/docker-build.yml'
+      - 'search_module.py'
+      - 'requirements.txt'
+      - '.github/workflows/**'
 
 jobs:
-  build:
+  run-script:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
 
-      - name: Build Docker image
+      - name: Install dependencies
         run: |
-          docker build -t my-python-app ./my-python-app
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run search_module.py
+        run: python search_module.py
