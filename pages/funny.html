@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="성격유형검사, 범죄도시, 캐릭터테스트, 심리테스트, 재미있는테스트">
+    <meta name="description" content="범죄도시 캐릭터로 알아보는 나의 성격 유형! 마석도부터 장첸까지 당신은 누구?">
+    <title>🚔 범죄도시 성격 유형 검사 - 당신은 어떤 캐릭터? #성격검사 #범죄도시 #심리테스트</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #ff6b6b;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #ffd93d;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .start-screen {
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .start-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+            margin-top: 20px;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .question-container {
+            display: none;
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 20px;
+            animation: slideInRight 0.6s ease-out;
+        }
+
+        .question-number {
+            color: #ffd93d;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .answers {
+            display: grid;
+            gap: 15px;
+        }
+
+        .answer-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        .answer-btn:hover {
+            background: rgba(255,107,107,0.3);
+            border-color: #ff6b6b;
+            transform: translateX(10px);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #ffd93d);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .result-container {
+            display: none;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .character-card {
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 20px;
+        }
+
+        .character-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #ff6b6b;
+            margin: 0 auto 20px;
+            display: block;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .character-name {
+            font-size: 2.2em;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .character-subtitle {
+            font-size: 1.3em;
+            color: #ffd93d;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .character-description {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #e0e0e0;
+            margin-bottom: 30px;
+        }
+
+        .character-traits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .trait-card {
+            background: rgba(255,107,107,0.2);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #ff6b6b;
+        }
+
+        .trait-title {
+            color: #ffd93d;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .compatibility {
+            background: rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .restart-btn {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(116, 185, 255, 0.3);
+        }
+
+        .social-share {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .share-btn {
+            background: #1da1f2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .share-btn.facebook {
+            background: #1877f2;
+        }
+
+        .share-btn.kakao {
+            background: #fee500;
+            color: #000;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .character-image {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .character-traits {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- tags: 성격유형검사, 범죄도시, 캐릭터테스트, 심리테스트, 재미있는테스트, 마석도, 장첸 -->
+    
+    <div class="container">
+        <div class="header">
+            <h1>🚔 범죄도시 성격 유형 검사</h1>
+            <p>당신의 내면에 숨어있는 범죄도시 캐릭터를 찾아보세요!</p>
+        </div>
+
+        <!-- 시작 화면 -->
+        <div class="start-screen" id="startScreen">
+            <h2>🎭 나는 범죄도시의 누구일까?</h2>
+            <p style="margin: 20px 0; font-size: 1.1em; line-height: 1.6;">
+                12개의 질문을 통해 당신의 성격을 분석하고<br>
+                범죄도시 속 캐릭터 중 가장 닮은 인물을 찾아드립니다!
+            </p>
+            <div style="margin: 30px 0;">
+                <p>🎯 <strong>총 8가지 결과</strong></p>
+                <p>⏱️ <strong>소요시간: 3-5분</strong></p>
+                <p>🎪 <strong>재미보장!</strong></p>
+            </div>
+            <button class="start-btn" onclick="startTest()">🚀 테스트 시작하기</button>
+        </div>
+
+        <!-- 진행률 표시 -->
+        <div class="progress-bar" id="progressBar" style="display: none;">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <!-- 질문 화면 -->
+        <div class="question-container" id="questionContainer">
+            <div class="question-number" id="questionNumber"></div>
+            <div class="question-text" id="questionText"></div>
+            <div class="answers" id="answersContainer"></div>
+        </div>
+
+        <!-- 결과 화면 -->
+        <div class="result-container" id="resultContainer">
+            <div class="character-card">
+                <img id="characterImage" class="character-image" src="" alt="캐릭터 이미지">
+                <h2 class="character-name" id="characterName"></h2>
+                <p class="character-subtitle" id="characterSubtitle"></p>
+                <p class="character-description" id="characterDescription"></p>
+                
+                <div class="character-traits" id="characterTraits"></div>
+                
+                <div class="compatibility" id="compatibility"></div>
+            </div>
+            
+            <div class="social-share">
+                <h3>📢 결과 공유하기</h3>
+                <button class="share-btn" onclick="shareToTwitter()">🐦 트위터</button>
+                <button class="share-btn facebook" onclick="shareToFacebook()">📘 페이스북</button>
+                <button class="share-btn kakao" onclick="shareToKakao()">💬 카카오톡</button>
+            </div>
+            
+            <button class="restart-btn" onclick="restartTest()">🔄 다시 테스트하기</button>
+        </div>
+    </div>
+
+    <script>
+        // 테스트 데이터
+        const questions = [
+            {
+                text: "친구가 위험에 처했을 때 당신의 반응은?",
+                answers: [
+                    { text: "🏃‍♂️ 일단 뛰어가서 몸으로 막는다", type: "마석도" },
+                    { text: "🧠 차근차근 계획을 세워서 도움을 준다", type: "전일만" },
+                    { text: "💰 돈으로 해결할 수 있는 방법을 찾는다", type: "장첸" },
+                    { text: "⚡ 빠르게 상황을 파악하고 즉석에서 해결한다", type: "윤기택" }
+                ]
+            },
+            {
+                text: "회사에서 불합리한 일을 당했을 때?",
+                answers: [
+                    { text: "🔥 바로 따지고 든다! 참을 수 없어!", type: "마석도" },
+                    { text: "📋 증거를 수집해서 정당한 절차를 밟는다", type: "전일만" },
+                    { text: "🎭 겉으로는 웃으면서 속으로는 복수를 계획한다", type: "장첸" },
+                    { text: "🤷‍♂️ 그냥 넘어간다. 싸우기 귀찮아", type: "오성택" }
+                ]
+            },
+            {
+                text: "돈을 버는 가장 좋은 방법은?",
+                answers: [
+                    { text: "💪 정직하게 땀 흘려 일하는 것", type: "마석도" },
+                    { text: "📚 꾸준히 공부해서 실력을 키우는 것", type: "전일만" },
+                    { text: "🧩 머리를 써서 효율적으로 버는 것", type: "장첸" },
+                    { text: "🎲 때로는 위험을 감수하고 큰 판을 벌이는 것", type: "윤기택" }
+                ]
+            },
+            {
+                text: "스트레스를 받을 때 당신의 해소법은?",
+                answers: [
+                    { text: "🥊 운동으로 땀을 뻘뻘 흘린다", type: "마석도" },
+                    { text: "🍺 조용히 혼자 술 한 잔 한다", type: "전일만" },
+                    { text: "🎵 클래식 음악을 들으며 차를 마신다", type: "장첸" },
+                    { text: "😴 일단 잠부터 자고 본다", type: "오성택" }
+                ]
+            },
+            {
+                text: "팀 프로젝트에서 당신의 역할은?",
+                answers: [
+                    { text: "👑 리더가 되어 모든 걸 책임진다", type: "마석도" },
+                    { text: "🕵️‍♂️ 뒤에서 묵묵히 분석하고 서포트한다", type: "전일만" },
+                    { text: "🎯 전략을 세우고 방향을 제시한다", type: "장첸" },
+                    { text: "⚡ 실행력으로 빠르게 결과를 만든다", type: "윤기택" }
+                ]
+            },
+            {
+                text: "이상형은?",
+                answers: [
+                    { text: "💝 순수하고 착한 사람", type: "마석도" },
+                    { text: "🤝 믿을 수 있고 의리 있는 사람", type: "전일만" },
+                    { text: "✨ 우아하고 품격 있는 사람", type: "장첸" },
+                    { text: "🔥 섹시하고 매력적인 사람", type: "윤기택" }
+                ]
+            },
+            {
+                text: "주말에 뭘 하고 싶어?",
+                answers: [
+                    { text: "🏠 집에서 가족들과 시간 보내기", type: "마석도" },
+                    { text: "📖 카페에서 책 읽기", type: "전일만" },
+                    { text: "🍷 고급 레스토랑에서 와인 한 잔", type: "장첸" },
+                    { text: "🎰 친구들과 스릴 넘치는 활동하기", type: "윤기택" }
+                ]
+            },
+            {
+                text: "인생에서 가장 중요한 것은?",
+                answers: [
+                    { text: "👨‍👩‍👧‍👦 가족의 행복", type: "마석도" },
+                    { text: "⚖️ 정의와 원칙", type: "전일만" },
+                    { text: "👑 성공과 권력", type: "장첸" },
+                    { text: "🌟 자유와 모험", type: "윤기택" }
+                ]
+            },
+            {
+                text: "갈등 상황에서 당신의 해결 방식은?",
+                answers: [
+                    { text: "👊 정면돌파! 부딪쳐서 해결한다", type: "마석도" },
+                    { text: "🤝 대화로 서로를 이해시킨다", type: "전일만" },
+                    { text: "🧠 심리전으로 상대를 제압한다", type: "장첸" },
+                    { text: "🏃‍♂️ 일단 피하고 시간을 두고 생각한다", type: "오성택" }
+                ]
+            },
+            {
+                text: "당신의 약점은?",
+                answers: [
+                    { text: "😤 감정적으로 행동할 때가 있다", type: "마석도" },
+                    { text: "😔 너무 완벽주의라 스트레스를 받는다", type: "전일만" },
+                    { text: "🥶 때로는 냉정해서 인정머리가 없어 보인다", type: "장첸" },
+                    { text: "😴 중요한 순간에 집중력이 떨어진다", type: "오성택" }
+                ]
+            },
+            {
+                text: "위급상황에서 제일 먼저 생각나는 것은?",
+                answers: [
+                    { text: "👨‍👩‍👧‍👦 우리 가족은 안전한가?", type: "마석도" },
+                    { text: "📋 매뉴얼대로 차근차근 해야지", type: "전일만" },
+                    { text: "🎯 이 상황을 어떻게 이용할까?", type: "장첸" },
+                    { text: "🏃‍♂️ 일단 여기서 벗어나자", type: "오성택" }
+                ]
+            },
+            {
+                text: "친구들 사이에서 당신은?",
+                answers: [
+                    { text: "🦸‍♂️ 모든 걸 해결해주는 든든한 형/누나", type: "마석도" },
+                    { text: "🎓 조언을 구할 때 찾는 현명한 친구", type: "전일만" },
+                    { text: "💎 품격 있고 카리스마 넘치는 친구", type: "장첸" },
+                    { text: "🎪 분위기 메이커 역할", type: "윤기택" }
+                ]
+            }
+        ];
+
+        const characters = {
+            "마석도": {
+                name: "마석도",
+                subtitle: "주먹으로 말하는 진짜 사나이",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMzMzIiByeD0iMTAwIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTA1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNjAiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfkoo8L3RleHQ+CjwvdXZnPgo=",
+                description: "당신은 마석도형 인간입니다! 주먹이 말보다 빠르고, 의리가 목숨보다 소중한 타입이에요. 복잡하게 생각하기보다는 일단 행동으로 옮기는 스타일입니다. '야! 이 새끼야!'가 입에 붙어있지만 속은 따뜻한 사람이에요.",
+                traits: [
+                    { title: "💪 장점", content: "강한 정의감, 뛰어난 실행력, 동료애 최고, 단순명쾌한 성격" },
+                    { title: "😅 단점", content: "생각보다 주먹이 먼저, 감정기복 심함, 계획 세우기 싫어함" },
+                    { title: "💼 적성", content: "운동선수, 경찰관, 소방관, 군인, 보디가드" },
+                    { title: "❤️ 연애스타일", content: "직진! 좋으면 좋다고 바로 표현하는 스타일" }
+                ],
+                compatibility: "💕 찰떡궁합: 전일만(현실적 조언), 오성택(힐링 파트너) | 💥 조심해야 할 타입: 장첸(너무 다른 세계 사람)"
+            },
+            "전일만": {
+                name: "전일만",
+                subtitle: "신중함의 대명사, 계획왕",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjNDQ0IiByeD0iMTAwIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTA1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNjAiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfp5M8L3RleHQ+CjwvdXZnPgo=",
+                description: "당신은 전일만형 인간입니다! 모든 일을 계획적으로 접근하고, 신중하게 판단하는 타입이에요. '이것도 고려해야 하고, 저것도 생각해야 하고...' 하면서 완벽한 계획을 세우는 걸 좋아합니다. 믿음직스럽지만 때로는 답답해 보일 수 있어요.",
+                traits: [
+                    { title: "🎯 장점", content: "치밀한 계획력, 높은 책임감, 신뢰도 최고, 분석력 우수" },
+                    { title: "😰 단점", content: "결정 속도 느림, 완벽주의 스트레스, 융통성 부족" },
+                    { title: "💼 적성", content: "검사, 회계사, 분석가, 기획자, 연구원" },
+                    { title: "❤️ 연애스타일", content: "신중하고 진지한 연애, 오래 사귀고 결혼까지 고려" }
+                ],
+                compatibility: "💕 찰떡궁합: 마석도(서로 보완), 오성택(편안한 관계) | 💥 조심해야 할 타입: 윤기택(너무 급함)"
+            },
+            "장첸": {
+                name: "장첸",
+                subtitle: "카리스마 넘치는 전략가",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjNjY2IiByeD0iMTAwIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTA1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNjAiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfkoo8L3RleHQ+CjwvdXZnPgo=",
+                description: "당신은 장첸형 인간입니다! 냉철한 판단력과 뛰어난 전략적 사고를 가진 타입이에요. 겉으로는 차갑고 무서워 보이지만, 실제로는 자신만의 철학과 원칙이 확고한 사람입니다. '모든 것은 계산 안에 있다'가 당신의 모토예요.",
+                traits: [
+                    { title: "🧠 장점", content: "뛰어난 전략적 사고, 강한 리더십, 냉정한 판단력, 카리스마" },
+                    { title: "❄️ 단점", content: "감정 표현 서툼, 때로는 냉혹함, 외로워하는 성향" },
+                    { title: "💼 적성", content: "CEO, 전략기획, 투자전문가, 정치인, 컨설턴트" },
+                    { title: "❤️ 연애스타일", content: "진지하고 깊이 있는 연애, 상대방도 수준급이어야 함" }
+                ],
+                compatibility: "💕 찰떡궁합: 전일만(서로 인정), 윤기택(서로 자극) | 💥 조심해야 할 타입: 마석도(물과 기름)"
+            },
+            "윤기택": {
+                name: "윤기택",
+                subtitle: "스피드가 생명인 액션파",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjNTU1IiByeD0iMTAwIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTA1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNjAiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuKhoeKgrzwvdGV4dD4KPC9zdmc+Cg==",
+                description: "당신은 윤기택형 인간입니다! 빠른 판단력과 즉석 대응 능력이 뛰어난 타입이에요. '일단 해보고 생각하자!'가 좌우명인 당신은 스릴과 모험을 즐기는 스타일입니다. 지루한 건 절대 못 참고, 항상 새로운 자극을 찾아다니죠.",
+                traits: [
+                    { title: "⚡ 장점", content: "빠른 실행력, 뛰어난 적응력, 순발력 최고, 매력적인 성격" },
+                    { title: "🌪️ 단점", content: "성급한 판단, 계획성 부족, 집중력 지속 어려움" },
+                    { title: "💼 적성", content: "영업, 마케팅, 연예인, 스포츠 선수, 응급의료진" },
+                    { title: "❤️ 연애스타일", content: "열정적이고 로맨틱, 하지만 쉽게 질리는 편" }
+                ],
+                compatibility: "💕 찰떡궁합: 장첸(서로 자극), 마석도(재미있는 조합) | 💥 조심해야 할 타입: 전일만(속도 차이)"
+            },
+            "오성택": {
+                name: "오성택",
+                subtitle: "평화주의자, 분위기 메이커",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjNzc3IiByeD0iMTAwIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTA1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNjAiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfmIo8L3RleHQ+CjwvdXZnPgo=",
+                description: "당신은 오성택형 인간입니다! 평화롭고 여유로운 타입이에요. 싸우는 것보다는 화해시키는 걸 좋아하고, 스트레스받는 일은 피하고 싶어 합니다. '뭐 그런 일로 화내지 마~'라며 분위기를 띄우는 것이 특기입니다.",
+                traits: [
+                    { title: "😊 장점", content: "뛰어난 친화력, 갈등 조정 능력, 긍정적 마인드, 스트레스 관리" },
+                    { title: "😴 단점", content: "의욕 부족할 때 있음, 결정 회피 성향, 때로는 무책임" },
+                    { title: "💼 적성", content: "상담사, 중재자, 서비스업, 엔터테이너, 힐링 관련 업종" },
+                    { title: "❤️ 연애스타일", content: "편안하고 자연스러운 연애, 무리하지 않는 관계" }
+                ],
+                compatibility: "💕 찰떡궁합: 마석도(힐링 제공), 전일만(안정감) | 💥 조심해야 할 타입: 장첸(너무 무거움)"
+            }
+        };
+
+        // 게임 상태
+        let currentQuestion = 0;
+        let scores = {};
+        
+        // 캐릭터 점수 초기화
+        Object.keys(characters).forEach(char => {
+            scores[char] = 0;
+        });
+
+        function startTest() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('progressBar').style.display = 'block';
+            document.getElementById('questionContainer').style.display = 'block';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('questionNumber').textContent = `질문 ${currentQuestion + 1} / ${questions.length}`;
+            document.getElementById('questionText').textContent = question.text;
+            
+            const answersContainer = document.getElementById('answersContainer');
+            answersContainer.innerHTML = '';
+            
+            question.answers.forEach((answer, index) => {
+                const button = document.createElement('button');
+                button.className = 'answer-btn';
+                button.textContent = answer.text;
+                button.onclick = () => selectAnswer(answer.type);
+                answersContainer.appendChild(button);
+            });
+        }
+
+        function selectAnswer(type) {
+            scores[type]++;
+            
+            currentQuestion++;
+            
+            if (currentQuestion < questions.length) {
+                setTimeout(showQuestion, 300);
+            } else {
+                setTimeout(showResult, 500);
+            }
+        }
+
+        function showResult() {
+            // 가장 높은 점수의 캐릭터 찾기
+            let maxScore = 0;
+            let resultType = '';
+            
+            Object.keys(scores).forEach(type => {
+                if (scores[type] > maxScore) {
+                    maxScore = scores[type];
+                    resultType = type;
+                }
+            });
+            
+            const character = characters[resultType];
+            
+            document.getElementById('progressBar').style.display = 'none';
+            document.getElementById('questionContainer').style.display = 'none';
+            document.getElementById('resultContainer').style.display = 'block';
+            
+            // 결과 표시
+            document.getElementById('characterImage').src = character.image;
+            document.getElementById('characterName').textContent = character.name;
+            document.getElementById('characterSubtitle').textContent = character.subtitle;
+            document.getElementById('characterDescription').textContent = character.description;
+            
+            // 특성 표시
+            const traitsContainer = document.getElementById('characterTraits');
+            traitsContainer.innerHTML = '';
+            
+            character.traits.forEach(trait => {
+                const traitDiv = document.createElement('div');
+                traitDiv.className = 'trait-card';
+                traitDiv.innerHTML = `
+                    <div class="trait-title">${trait.title}</div>
+                    <div>${trait.content}</div>
+                `;
+                traitsContainer.appendChild(traitDiv);
+            });
+            
+            // 궁합 표시
+            document.getElementById('compatibility').innerHTML = `
+                <h3>💕 궁합 분석</h3>
+                <p>${character.compatibility}</p>
+            `;
+            
+            // 결과 저장 (로컬 스토리지)
+            localStorage.setItem('criminalCityTestResult', JSON.stringify({
+                character: resultType,
+                date: new Date().toISOString(),
+                scores: scores
+            }));
+        }
+
+        function restartTest() {
+            currentQuestion = 0;
+            Object.keys(characters).forEach(char => {
+                scores[char] = 0;
+            });
+            
+            document.getElementById('resultContainer').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'block';
+        }
+
+        // 공유 기능
+        function shareToTwitter() {
+            const result = JSON.parse(localStorage.getItem('criminalCityTestResult'));
+            const text = `나는 범죄도시의 ${result.character}! 🚔 당신도 테스트해보세요!`;
+            const url = window.location.href;
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        function shareToFacebook() {
+            const url = window.location.href;
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        function shareToKakao() {
+            const result = JSON.parse(localStorage.getItem('criminalCityTestResult'));
+            alert(`나는 범죄도시의 ${result.character}!\n\n카카오톡 공유 기능은 카카오 SDK 연동이 필요합니다.`);
+        }
+
+        // 페이지 로드 시 이전 결과가 있다면 표시 옵션 제공
+        document.addEventListener('DOMContentLoaded', function() {
+            const previousResult = localStorage.getItem('criminalCityTestResult');
+            if (previousResult) {
+                const result = JSON.parse(previousResult);
+                const startScreen = document.getElementById('startScreen');
+                const showPreviousBtn = document.createElement('button');
+                showPreviousBtn.className = 'restart-btn';
+                showPreviousBtn.textContent = `🔍 이전 결과 보기 (${result.character})`;
+                showPreviousBtn.style.marginLeft = '10px';
+                showPreviousBtn.onclick = function() {
+                    // 이전 결과로 바로 이동
+                    scores = result.scores;
+                    currentQuestion = questions.length;
+                    showResult();
+                };
+                startScreen.appendChild(showPreviousBtn);
+            }
+        });
+    </script>
+</body>
+</html>

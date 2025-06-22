@@ -77,10 +77,18 @@
     "id": "net10preview"
   },
   {
+
     "title": "GitHub Actions",
     "path": "pages/fae83bd48c.html",
     "category": "github",
     "created_at": "2025-06-22 08:53:08",
     "id": "githubactions"
+  },
+  {
+    "title": "범죄도시 유형 검사",
+    "path": "pages/funny.html",
+    "category": "funny",
+    "created_at": "2025-06-22 21:07:27",
+    "id": "범죄도시유형검사"
   }
 ]
