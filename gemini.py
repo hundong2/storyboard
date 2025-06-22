@@ -13,7 +13,7 @@ load_dotenv()
 # const apiKey = "" // Canvas 환경에서 API 키가 자동으로 제공되므로 빈 문자열로 둡니다.
 # 하지만 Python 스크립트에서는 실제 키가 필요합니다.
 # 여기에 YOUR_API_KEY_HERE 대신 실제 Gemini API 키를 입력하세요.
-API_KEY =  os.getenv("secrets.GEMINI_API_KEY") 
+API_KEY =  os.getenv("GEMINI_API_KEY") 
 # 모델에 보낼 프롬프트를 정의합니다.
 # 모델에게 HTML 파일을 생성하도록 명시적으로 지시하는 것이 중요합니다.
 template_prompt_text = """
