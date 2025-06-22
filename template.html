@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Web Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #004085;
+        }
+        h2 {
+            font-size: 1.8em;
+        }
+        h3 {
+            font-size: 1.4em;
+            color: #0069d9;
+            border-bottom: none;
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            padding-left: 0;
+        }
+        ol {
+            list-style-type: decimal;
+            margin-left: 20px;
+            padding-left: 0;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .reference-list li {
+            margin-bottom: 5px;
+        }
+        .example-code {
+            background-color: #e9e9e9;
+            padding: 15px;
+            border-left: 5px solid #007bff;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HTML의 역사 및 최신 트렌드</h1>
+
+        <section>
+            <h2>1. HTML의 역사</h2>
+            <p>
+                HTML(HyperText Markup Language)은 웹 페이지를 만들기 위한 표준 마크업 언어입니다. 팀 버너스리(Tim Berners-Lee)에 의해 1990년대 초반 CERN(유럽 입자 물리 연구소)에서 과학자들이 문서를 공유하기 위한 목적으로 처음 개발되었습니다. 이후 월드 와이드 웹(WWW)의 확산과 함께 발전하며 현재의 모습을 갖추게 되었습니다.
+            </p>
+
+            <h3>초기 HTML (1990년대)</h3>
+            <ul>
+                <li><strong>HTML (1991)</strong>: 팀 버너스리가 제안한 최초의 버전으로, 매우 단순한 문서 구조와 하이퍼링크 기능만을 가졌습니다.</li>
+                <li><strong>HTML 2.0 (1995)</strong>: 첫 번째 공식 표준으로, 기본적인 텍스트 서식, 이미지 삽입, 폼(form) 기능 등을 포함했습니다.</li>
+                <li><strong>HTML 3.2 (1997)</strong>: 표(table), 앱릿(applet) 등 멀티미디어 요소가 추가되고, 스타일시트(CSS)의 개념이 도입되기 시작했습니다.</li>
+                <li><strong>HTML 4.01 (1999)</strong>: 프레임(frame) 도입 및 스크립트(JavaScript) 지원이 강화되었고, 엄격한 구문 규칙을 강조했습니다.</li>
+            </ul>
+
+            <h3>XHTML (2000년대 초반)</h3>
+            <p>
+                HTML 4.01 이후, 웹 표준을 담당하는 W3C(World Wide Web Consortium)는 HTML의 한계를 극복하고 XML의 엄격한 규칙을 도입한 XHTML을 발표했습니다. XHTML은 "eXtensible HTML"의 약자로, 모든 태그를 닫고 소문자를 사용하는 등 보다 엄격한 문법을 요구하여 웹 문서의 구조적 일관성과 확장성을 높이고자 했습니다. 하지만 웹 개발의 유연성을 저해한다는 비판도 있었습니다.
+            </p>
+
+            <h3>HTML5의 등장 (2000년대 중반 ~ 현재)</h3>
+            <p>
+                XHTML의 한계와 웹 기술의 변화(멀티미디어 콘텐츠 증가, 모바일 환경의 부상)에 대응하기 위해 WHATWG(Web Hypertext Application Technology Working Group)가 주도하고 W3C가 합류하여 HTML5가 개발되었습니다. HTML5는 단순히 새로운 버전이 아니라, 웹 개발 패러다임의 큰 변화를 가져온 혁신적인 전환점이 되었습니다.
+            </p>
+            <ul>
+                <li><strong>시맨틱 태그(Semantic Tags)</strong>: `<header>`, `<nav>`, `<article>`, `<section>`, `<footer>` 등 문서의 구조적 의미를 명확히 하는 태그들이 도입되어 검색 엔진 최적화(SEO)와 접근성(Accessibility)을 향상시켰습니다.</li>
+                <li><strong>멀티미디어 지원 강화</strong>: `<audio>`, `<video>` 태그를 통해 플러그인 없이도 오디오/비디오를 직접 재생할 수 있게 되었습니다.</li>
+                <li><strong>향상된 폼 기능</strong>: `<input type="date">`, `<input type="email">`, `placeholder` 속성 등 다양한 입력 유형과 유효성 검사 기능이 추가되었습니다.</li>
+                <li><strong>새로운 API</strong>: Geolocation, Web Storage (localStorage, sessionStorage), Canvas, SVG, Web Workers 등 다양한 JavaScript API들이 웹 브라우저 기능을 확장시켰습니다.</li>
+            </ul>
+            <p class="example-code">
+                &lt;!-- HTML5 시맨틱 태그 예제 --&gt;<br>
+                &lt;header&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;웹사이트 제목&lt;/h1&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;nav&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ul&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;a href="#"&gt;메뉴1&lt;/a&gt;&lt;/li&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;a href="#"&gt;메뉴2&lt;/a&gt;&lt;/li&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ul&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/nav&gt;<br>
+                &lt;/header&gt;<br>
+                &lt;main&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;article&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h2&gt;게시물 제목&lt;/h2&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;게시물 내용...&lt;/p&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/article&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;aside&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h3&gt;사이드바&lt;/h3&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;관련 링크...&lt;/p&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/aside&gt;<br>
+                &lt;/main&gt;<br>
+                &lt;footer&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Copyright &copy; 2023.&lt;/p&gt;<br>
+                &lt;/footer&gt;
+            </p>
+        </section>
+
+        <section>
+            <h2>2. HTML의 최신 트렌드</h2>
+            <p>
+                HTML은 단독으로 사용되기보다는 CSS, JavaScript와 결합하여 끊임없이 발전하고 있습니다. 최신 웹 개발 트렌드는 사용자 경험(UX) 향상, 성능 최적화, 접근성 강화, 그리고 개발 효율성을 중심으로 전개됩니다.
+            </p>
+
+            <h3>주요 트렌드</h3>
+            <ol>
+                <li>
+                    <strong>시맨틱 웹 및 웹 접근성(Accessibility) 강화</strong>
+                    <p>
+                        HTML5에서 도입된 시맨틱 태그는 여전히 중요하며, 더 나아가 스크린 리더 사용자 등을 위한 웹 접근성(WAI-ARIA 속성 사용, 올바른 태그 사용, 명확한 대체 텍스트 등)은 이제 필수적인 고려 사항이 되었습니다. 모든 사용자가 동등하게 웹 콘텐츠에 접근할 수 있도록 하는 것이 목표입니다.
+                    </p>
+                    <p class="example-code">
+                        &lt;!-- 웹 접근성을 고려한 이미지와 버튼 --&gt;<br>
+                        &lt;img src="logo.png" alt="회사 로고"&gt;<br>
+                        &lt;button aria-label="메뉴 열기"&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="icon"&gt;☰&lt;/span&gt;<br>
+                        &lt;/button&gt;
+                    </p>
+                </li>
+                <li>
+                    <strong>웹 컴포넌트(Web Components)</strong>
+                    <p>
+                        재사용 가능한 커스텀 HTML 요소를 생성하는 기술입니다. Shadow DOM, Custom Elements, HTML Templates 등의 표준 기술을 통해 UI 요소를 캡슐화하고 격리하여 다른 웹 애플리케이션에서도 쉽게 가져다 쓸 수 있도록 합니다. 이는 대규모 프로젝트에서 일관성과 효율성을 높이는 데 기여합니다.
+                    </p>
+                    <p class="example-code">
+                        &lt;!-- 커스텀 요소 사용 예시 --&gt;<br>
+                        &lt;my-custom-button theme="primary"&gt;클릭하세요&lt;/my-custom-button&gt;<br><br>
+                        &lt;!-- JavaScript로 정의 (개념적 예시) --&gt;<br>
+                        &lt;script&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;class MyCustomButton extends HTMLElement {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor() { super(); /* ... */ }<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;customElements.define('my-custom-button', MyCustomButton);<br>
+                        &lt;/script&gt;
+                    </p>
+                </li>
+                <li>
+                    <strong>반응형 웹 디자인(Responsive Web Design)의 고도화</strong>
+                    <p>
+                        다양한 기기(데스크톱, 태블릿, 모바일)에 최적화된 레이아웃을 제공하는 것은 이제 기본 중의 기본입니다. CSS Flexbox, Grid Layout과 함께 `picture` 태그를 활용한 반응형 이미지, `srcset` 속성 등을 통해 더욱 효율적이고 유연한 디자인을 구현합니다.
+                    </p>
+                    <p class="example-code">
+                        &lt;!-- 반응형 이미지 예시 --&gt;<br>
+                        &lt;picture&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;source media="(min-width: 800px)" srcset="large-image.jpg"&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;source media="(min-width: 400px)" srcset="medium-image.jpg"&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;img src="small-image.jpg" alt="반응형 이미지"&gt;<br>
+                        &lt;/picture&gt;
+                    </p>
+                </li>
+                <li>
+                    <strong>성능 최적화(Performance Optimization)</strong>
+                    <p>
+                        사용자 경험의 핵심 요소인 빠른 로딩 속도를 위해 HTML 구조 최적화가 중요합니다. 이미지 지연 로딩(lazy loading: `loading="lazy"`), 스크립트 비동기 로딩(`async`, `defer`), Critical CSS 인라인 등 다양한 기법이 적용됩니다. 이는 Core Web Vitals와 같은 웹 성능 지표에 직접적인 영향을 미칩니다.
+                    </p>
+                    <p class="example-code">
+                        &lt;!-- 이미지 지연 로딩 예시 --&gt;<br>
+                        &lt;img src="placeholder.jpg" data-src="actual-image.jpg" alt="지연 로딩 이미지" loading="lazy"&gt;<br><br>
+                        &lt;!-- 스크립트 비동기 로딩 예시 --&gt;<br>
+                        &lt;script src="script.js" async&gt;&lt;/script&gt;<br>
+                        &lt;script src="another-script.js" defer&gt;&lt;/script&gt;
+                    </p>
+                </li>
+                <li>
+                    <strong>프로그레시브 웹 앱(Progressive Web Apps, PWA)</strong>
+                    <p>
+                        웹 사이트가 마치 네이티브 앱처럼 작동하도록 만드는 기술입니다. 서비스 워커(Service Worker)를 통해 오프라인 지원, 푸시 알림, 홈 화면에 추가 기능 등을 제공하여 사용자 참여도를 높입니다. HTML 자체는 PWA의 기반을 제공하며, 매니페스트 파일(`<link rel="manifest">`)이 중요합니다.
+                    </p>
+                </li>
+                <li>
+                    <strong>웹어셈블리(WebAssembly, Wasm)와의 연동</strong>
+                    <p>
+                        고성능 웹 애플리케이션을 위해 C/C++, Rust 등의 언어로 작성된 코드를 웹 브라우저에서 실행할 수 있도록 하는 저수준 바이너리 코드 형식입니다. HTML/JavaScript는 여전히 웹 인터페이스를 구성하지만, 복잡한 계산이나 게임 엔진 등 성능이 중요한 부분에서는 WebAssembly가 활용됩니다.
+                    </p>
+                </li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>3. References</h2>
+            <ul class="reference-list">
+                <li>
+                    <strong>HTML 역사 관련:</strong>
+                    <ul>
+                        <li><a href="https://www.w3.org/standards/webdesign/html" target="_blank">W3C - HTML History</a></li>
+                        <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank">MDN Web Docs - HTML (General)</a></li>
+                        <li><a href="https://ko.wikipedia.org/wiki/HTML" target="_blank">위키백과 - HTML</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>HTML5 및 최신 트렌드 관련:</strong>
+                    <ul>
+                        <li><a href="https://developer.mozilla.org/en-US/docs/Glossary/HTML5" target="_blank">MDN Web Docs - HTML5 Glossary</a></li>
+                        <li><a href="https://www.w3.org/WAI/fundamentals/accessibility-intro/" target="_blank">W3C - Introduction to Web Accessibility</a></li>
+                        <li><a href="https://web.dev/learn/accessibility/" target="_blank">web.dev - Learn Accessibility</a> (Google 개발자 문서)</li>
+                        <li><a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components" target="_blank">MDN Web Docs - Web Components</a></li>
+                        <li><a href="https://web.dev/explore/responsive-web-design/" target="_blank">web.dev - Responsive Web Design</a> (Google 개발자 문서)</li>
+                        <li><a href="https://web.dev/explore/progressive-web-apps/" target="_blank">web.dev - Progressive Web Apps</a> (Google 개발자 문서)</li>
+                        <li><a href="https://webassembly.org/" target="_blank">WebAssembly 공식 웹사이트</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>학술 논문/연구 (직접적인 HTML 역사/트렌드에 대한 단일 논문보다는 각 기술별 연구가 많음):</strong>
+                    <ul>
+                        <li>HTML 자체의 역사에 대한 특정 학술 논문은 드물며, 주로 웹 표준 및 관련 기술의 발전사 형태로 다루어집니다. 웹 컴포넌트, PWA, 웹 접근성 등 각 트렌드별로 활발한 연구가 진행 중입니다. 예를 들어, "Web Accessibility Guidelines Compliance", "Performance Optimization in Web Applications" 등의 키워드로 학술 검색 엔진에서 검색해 볼 수 있습니다.</li>
+                        <li><a href="https://scholar.google.com/scholar?q=web+accessibility+standards+research" target="_blank">Google Scholar - Web Accessibility Standards Research</a> (웹 접근성 관련 학술 자료 검색)</li>
+                        <li><a href="https://scholar.google.com/scholar?q=progressive+web+apps+research" target="_blank">Google Scholar - Progressive Web Apps Research</a> (PWA 관련 학술 자료 검색)</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html>

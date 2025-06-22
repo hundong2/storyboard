@@ -11,6 +11,15 @@
             "program": "test.py",
             "cwd": "${workspaceFolder}/my-python-app",
             "console": "integratedTerminal"
+        },
+{
+            "name": "Python: 현재 파일 (venv)",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "cwd": "${fileDirname}",
+            "python": "${workspaceFolder}/my-python-app/venv/bin/python",
+            "console": "integratedTerminal"
         }
     ]
 }
