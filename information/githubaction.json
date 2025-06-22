@@ -1,5 +1,6 @@
 {
     "title": "GitHub Actions",
     "contents": "GitHub Actions에 대해 자세히 설명해주고, CI/CD 파이프라인을 구축하는 방법에 대해 알려줘. 예제 워크플로우 파일도 포함해줘. github action 시 작성하는 파일에 대해 설명해주고, 해당 yml파일안에 들어가는 설정 값들도 모두 설명해줘. code 부분은 화이트 배경에 흑색 글자로 작성해줘",
-    "category": "github"
+    "category": "github",
+    "is_done": true
 }
