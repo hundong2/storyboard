@@ -6,6 +6,7 @@ on:
       - 'search_module.py'
       - 'requirements.txt'
       - '.github/workflows/**'
+      - '**/*.json'   # 모든 json 파일 변경 시에도 실행
 
 jobs:
   run-script:
